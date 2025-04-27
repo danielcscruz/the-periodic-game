@@ -9,7 +9,7 @@
                 :class="[rowIndex < 4 ? 'cell-next' : 'cell']">                        
                             <div v-if="cell == 0" class="cell-blank"></div>
                             <div v-else-if="cell == 1" class="cell-x"></div>
-                            <div v-else class="cell-element"><span>{{ cell }}</span></div>
+                            <div v-else :class="getClassForCell(cell)" class="cell-element"><span>{{ cell }}</span></div>
                         </td>
                     </tr>
                 </tbody>
@@ -24,7 +24,7 @@
                 class="cell-next">                        
                             <div v-if="cell == 0" class="cell-blank"></div>
                             <div v-else-if="cell == 1" class="cell-x"></div>
-                            <div v-else class="cell-element">{{ cell }}</div>
+                            <div v-else :class="getClassForCell(cell)" class="cell-element">{{ cell }}</div>
                         </td>
                     </tr>
                 </tbody>
@@ -39,7 +39,6 @@
             <div class="control-down" @click="moveDown"></div>
             <div class="control-right" @click="moveRight"></div>
         </div>
-       
     </div>
 </div>
 
@@ -49,6 +48,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, onBeforeUnmount } from 'vue'
 import { useGameEngine } from '@/stores/engine'
+import { classDictionary } from './classDictionary'; // Importando o dicionário
+
 const engine = useGameEngine()
 
 onMounted(() => {
@@ -108,6 +109,12 @@ onBeforeUnmount(() => {
 onUnmounted(() => {
     engine.stopGameLoop()
 })
+
+const getClassForCell = (cell: string| number) => {
+    const cellKey = cell.toString(); // Converte o valor para string
+    return classDictionary[cellKey] || 'undefined'; // Classe padrão caso não haja correspondência
+};
+
 
 </script>
 

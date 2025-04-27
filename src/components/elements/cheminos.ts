@@ -1,26 +1,35 @@
 const formulas = [
     //Formulas 'A'
-    // { formula: 'He', weight: 9 },
-    //Formulas 'AA'
-    { formula: 'HH', weight: 5 },
-    { formula: 'OO', weight: 5 },
-    { formula: 'NN', weight: 5 },
-    //Formulas 'AB'
-    { formula: 'OC', weight: 5 },
-    { formula: 'ON', weight: 5 },
-    { formula: 'NaCl', weight: 5 },
-    { formula: 'KCl', weight: 5 },
-    { formula: 'OC', weight: 5 },
-    //Formulas 'ABA'
-    { formula: 'OHH', weight: 2 },
-    { formula: 'COO', weight: 2 },
-    { formula: 'SiOO', weight: 2 },
-    { formula: 'NOO', weight: 2 },
-    { formula: 'ONN', weight: 2 },
-    { formula: 'SOO', weight: 2 },
-    { formula: 'SHH', weight: 2 },
-    { formula: 'UOO', weight: 2 },
-    { formula: 'PuOO', weight: 2 },
+    { formula: 'He', weight: 3 },      // Hélio é raro, peso reduzido
+    { formula: 'Au', weight: 1 },      // Ouro é muito raro
+    { formula: 'Pt', weight: 1 },      // Platina também é muito rara
+    { formula: 'S', weight: 6 },       // Enxofre é mais abundante, mas não tanto quanto o oxigênio
+    { formula: 'P', weight: 5 },       // Fósforo é mais raro, mas ainda assim importante para a vida
+
+    // Formulas 'AA' (elementos comuns)
+    { formula: 'HH', weight: 9 },      // Hidrogênio é muito abundante, peso mais alto
+    { formula: 'OO', weight: 10 },     // Oxigênio é o mais abundante, peso mais alto
+    { formula: 'NN', weight: 8 },      // Nitrogênio é abundante, mas um pouco menos que oxigênio
+
+    // Formulas 'AB' (combinados com oxigênio)
+    { formula: 'OC', weight: 7 },      // Combinado com oxigênio, relativamente comum
+    { formula: 'ON', weight: 7 },      // Combinado com oxigênio, relativamente comum
+    { formula: 'ClNa', weight: 6 },    // Sódio e cloro são relativamente comuns, mas não tanto quanto oxigênio
+    { formula: 'KCl', weight: 6 },     // Potássio e cloro, comuns, mas menos abundantes
+    { formula: 'FeO', weight: 7 },     // Ferro e oxigênio, bastante comuns
+    { formula: 'AlO', weight: 6 },     // Alumínio e oxigênio, abundantes
+    { formula: 'MgO', weight: 6 },     // Magnésio e oxigênio, relativamente comuns
+
+    // Formulas 'ABA' (compostos mais complexos)
+    { formula: 'OHH', weight: 9 },     // Hidrogênio e oxigênio (água), muito comum
+    { formula: 'COO', weight: 7 },     // Carbono e oxigênio (CO2), importante e comum
+    { formula: 'SiOO', weight: 6 },    // Silício e oxigênio (SiO2, sílica), muito comum
+    { formula: 'NOO', weight: 7 },     // Nitrogênio e oxigênio (NO2), comum
+    { formula: 'ONN', weight: 7 },     // Nitrogênio e oxigênio, comum
+    { formula: 'SOO', weight: 6 },     // Enxofre e oxigênio, comum
+    { formula: 'SHH', weight: 9 },     // Enxofre e hidrogênio, importante e comum
+    { formula: 'UOO', weight: 2 },     // Urânio é muito raro, peso baixo
+    { formula: 'PuOO', weight: 2 },    // Plutônio também é muito raro, peso baixo
     //Formulas 'AABAA'
     // { formula: 'CHHHH', weight: 10 },
 ]

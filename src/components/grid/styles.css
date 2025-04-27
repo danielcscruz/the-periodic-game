@@ -119,9 +119,68 @@ table {
 .cell-x{
     height: 100%;
     width: 100%;
-    background-color: rgb(92, 127, 38);
-    border: 1px solid rgb(92, 127, 38);
+    /* background-color: rgba(165, 165, 165, 0.284); */
+    border: 1px dotted rgb(199, 199, 199);
 
 }
 
+
+/* Classe para hidrogênio */
+.hydrogen {
+    border: 1px solid #ff1e56; /* Vermelho neon */
+}
+
+/* Classe para gases nobres */
+.noble-gas {
+    border: 1px solid #00b0ff; /* Azul neon */
+}
+
+/* Classe para metais alcalinos */
+.alkali-metal {
+    border: 1px solid #ff0000; /* Vermelho neon */
+}
+
+/* Classe para metais alcalino-terrosos */
+.alkaline-earth-metal {
+    border: 1px solid #ff6f00; /* Laranja neon */
+}
+
+/* Classe para metaloides */
+.metalloid {
+    border: 1px solid #ffa500; /* Laranja-amarelo neon */
+}
+
+/* Classe para não-metais */
+.non-metal {
+    border: 1px solid #32cd32; /* Verde neon */
+}
+
+/* Classe para halogênios */
+.halogen {
+    border: 1px solid #00ff00; /* Verde neon claro */
+}
+
+/* Classe para metais de transição */
+.transition-metal {
+    border: 1px solid #ffff00; /* Amarelo neon */
+}
+
+/* Classe para lantânidos */
+.lanthanide {
+    border: 1px solid #ff9b6a; /* Laranja neon claro */
+}
+
+/* Classe para actinídeos */
+.actinide {
+    border: 1px solid #ffec3d; /* Amarelo neon claro */
+}
+
+/* Classe para outros metais */
+.metal {
+    border: 1px solid #ffd700; /* Amarelo ouro neon */
+}
+
+.undefined {
+    border: 1px solid #f0e68c; /* Amarelo neon mais suave */
+}
 
