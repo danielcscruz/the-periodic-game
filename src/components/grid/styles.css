@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap');
+
+.periodic-container{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: 100vh;
+    max-width:100%;
+
+}
+.grid-wrapper{
+    height: 100vh;
+    background-color: rgb(31, 28, 49);
+    align-content: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 20px 0;
+    position: relative;
+    margin: 0 auto;
+}
+.next-wrapper{
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    top: 20px;
+    left: 40px;
+}
+h4{
+    font-family: Tiny5;
+    font-size: 20px;
+}
+.next-locked{
+    display: flex;
+    flex-direction: column;
+}
+table {
+    border-collapse: collapse;
+    table-layout: fixed; /* <--- muito importante! */
+    width: 100%;
+
+}  
+.scoreboard{
+    position: absolute;
+    font-family: Tiny5;
+    font-size: 28px;
+    top: 20px;
+    right: 40px;
+}
+
+.cell{
+    border: 1px solid transparent;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+.cell-next{
+    border: none;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.cell-element{
+
+    font-family: "Tiny5", sans-serif;
+    text-align: center;
+    text-justify: center;
+    align-items: center;
+    font-size: 10px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgb(92, 127, 38);
+    overflow: hidden; /* <-- importante */
+    text-overflow: ellipsis; /* <-- opcional, se quiser "..." */
+    white-space: nowrap; /* <-- impede quebrar linha */
+}
+.cell-blank{
+    border: 1px solid transparent;
+}
+
+.cell-x{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(92, 127, 38);
+    border: 1px solid rgb(92, 127, 38);
+
+}
+
+
