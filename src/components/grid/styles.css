@@ -5,8 +5,8 @@
     flex-direction: row;
     position: relative;
     height: 100vh;
-    max-width:100%;
-
+    max-width:600px;
+    margin: 0 auto;
 }
 .grid-wrapper{
     height: 100vh;
@@ -33,6 +33,35 @@ h4{
 .next-locked{
     display: flex;
     flex-direction: column;
+}
+.controls{
+    position: fixed;
+    bottom: 0;
+    height: 500px;
+    width: 100%;
+    /* background-color: rgba(19, 19, 19, 0.3); */
+}
+.control-bottom div {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    /* border: 1px dashed rgba(255, 255, 255, 0.411); */
+}
+.control-rotate{
+    height:300px;
+    text-align: center;
+    align-items: center;
+    /* border: 1px dashed rgba(255, 255, 255, 0.411); */
+
+}
+.control-bottom{
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
 }
 table {
     border-collapse: collapse;
@@ -71,13 +100,17 @@ table {
     text-align: center;
     text-justify: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 15px;
     height: 100%;
     width: 100%;
     border: 1px solid rgb(92, 127, 38);
     overflow: hidden; /* <-- importante */
     text-overflow: ellipsis; /* <-- opcional, se quiser "..." */
     white-space: nowrap; /* <-- impede quebrar linha */
+
+    @media screen and (max-width: 700px) {
+        font-size: 10px;
+    }
 }
 .cell-blank{
     border: 1px solid transparent;

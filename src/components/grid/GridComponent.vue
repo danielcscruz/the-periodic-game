@@ -15,7 +15,7 @@
                 </tbody>
             </table>
     </div>
-    <div class="next-wrapper">
+    <div class="next-wrapper" @click="lockNext">
         <div class="next-locked">
             <table>
                 <tbody>
@@ -31,6 +31,15 @@
             </table>
             <h4 v-if="engine.is_next_locked">locked!</h4>
         </div>
+    </div>
+    <div class="controls">
+        <div class="control-rotate" @click="rotateChemino"></div>
+        <div class="control-bottom">
+            <div class="control-left" @click="moveLeft"></div>
+            <div class="control-down" @click="moveDown"></div>
+            <div class="control-right" @click="moveRight"></div>
+        </div>
+       
     </div>
 </div>
 
@@ -60,7 +69,30 @@ const handleKeyDown = (event: KeyboardEvent) => {
         case 'ArrowRight':
             engine.moveRightChemino();
             break;
+        case 'ArrowDown':
+            engine.dropChemino();
+            break;
     }
+}
+
+const moveLeft = () => {
+    engine.moveLeftChemino();
+}
+
+const moveRight = () => {
+    engine.moveRightChemino();
+}
+
+const moveDown = () => {
+    engine.dropChemino();
+}
+
+const lockNext = () => {
+    engine.toggle();
+}
+
+const rotateChemino = () => {
+    engine.rotateChemino();
 }
 
 

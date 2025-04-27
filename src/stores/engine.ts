@@ -64,7 +64,6 @@ function addGrids(
     return result;
 }
 
-
 export const useGameEngine = defineStore('engine', {
     state: () => {
         return {
@@ -78,10 +77,12 @@ export const useGameEngine = defineStore('engine', {
             is_game_over: false,
             prep_chemino: true,
             row_position: 0,
+            col_position: 0,
             score: 1,
             isRunning: true,
             intervalId: null as null | number,
             gameSpeed: 500, // in ms
+
         }
     },
     actions: {
@@ -102,27 +103,53 @@ export const useGameEngine = defineStore('engine', {
             }
             this.isRunning = false
         },
-
+        pauseGameLoop() {
+            if (this.intervalId) {
+                clearInterval(this.intervalId)
+                this.intervalId = null
+            }
+        }, 
+        resumeGameLoop() {
+            if (!this.intervalId) {
+                this.intervalId = setInterval(() => {
+                    if (!this.isRunning) return
+                    this.updateGame()
+                }, this.gameSpeed)
+            }
+        },
         setArenaGrid(){
             this.arena_grid = this.grid
         },
-        checkOverflow(){
-
-        },
-        checkCollision() {
-            for (let row = 24; row >= 3; row--) {
+        canMoveDown() {
+            for (let row = 24; row >= 0; row--) {
                 for (let col = 0; col <= 20; col++) {
-                    if (this.arena_grid[row][col] !== 1 && this.chemino_grid[row][col] !== 0) {
-                        if (this.arena_grid[row + 1][col] !== 0) {
-                            console.log('colisão');
-                            console.log(this.arena_grid[row + 1][col])
-                            this.is_chemino_falling = false
-                            this.is_next_locked = false
-                            // this.setArenaGrid()
+                    if (typeof this.chemino_grid[row][col] === 'string') {
+                        // Checa se abaixo está ocupado
+                        if (row + 1 > 24 || this.arena_grid[row + 1][col] !== 0) {
+                            return false
                         }
                     }
                 }
             }
+            return true
+        },
+        canMoveSide(direction: 'left' | 'right') {
+            const delta = direction === 'left' ? -1 : 1
+        
+            for (let row = 0; row <= 24; row++) {
+                for (let col = 0; col <= 20; col++) {
+                    if (typeof this.chemino_grid[row][col] === 'string') {
+                        const newCol = col + delta
+        
+                        // Se passar da borda ou colidir com algo na arena
+                        if (newCol < 0 || newCol > 20 || this.arena_grid[row][newCol] !== 0) {
+                            console.log("#Collision: cant move/rotate")
+                            return false
+                        }
+                    }
+                }
+            }
+            return true
         },
         updateNext(){
             if(!this.is_next_locked) {
@@ -145,10 +172,11 @@ export const useGameEngine = defineStore('engine', {
     
                 }
             }
+            this.col_position = 0
             this.row_position = 0
             this.is_chemino_falling = true
         },
-        fallCheminoGrid(){
+        moveDownChemino(){
             this.row_position = this.row_position + 1
             for (let row=24; row>=0; row--){
                 for(let col=0; col<=21;col++){
@@ -164,85 +192,148 @@ export const useGameEngine = defineStore('engine', {
 
         },
         updateGame() {
-            //Game engine
 
-            // this.nextChemino()
-            
-            if(!this.is_chemino_falling){
+            if (!this.is_chemino_falling) {
                 this.setChemino()
                 this.updateNext()
                 this.setArenaGrid()
-                
-            }else{
-                this.updateNext()
-                this.fallCheminoGrid()
-                this.setGrid()
-                this.checkCollision()
+            } else {
+                if (this.canMoveDown()) {
+                    this.moveDownChemino()
+                    this.updateNext()
+
+                } else {
+                    this.is_chemino_falling = false
+                    this.is_next_locked = false
+                    this.setArenaGrid()
+                    this.setGrid()
+                }
             }
             this.setGrid()
-
             this.score = this.score +1
 
         },
-        moveLeftChemino(){
-            for(let col=0; col<=21; col++){
-                for(let row=0; row<=24;row++){
-                    if(typeof this.chemino_grid[row][col] === 'string'){
-                        this.chemino_grid[row][col-1] = this.chemino_grid[row][col]
-                        this.chemino_grid[row][col] = 0
+        moveLeftChemino() {
+            if (!this.canMoveSide('left')) return
+                this.col_position = this.col_position - 1
+                for (let row = 0; row <= 24; row++) {
+                    for (let col = 0; col <= 20; col++) {
+                        if (typeof this.chemino_grid[row][col] === 'string') {
+                            // Move para a esquerda
+                            this.chemino_grid[row][col - 1] = this.chemino_grid[row][col]
+                            this.chemino_grid[row][col] = 0
+                        }
+                    }
                 }
-                }
-            }
+        
         },
-        moveRightChemino(){
-            for(let col=21; col>=0; col--){
-                for(let row=0; row<=24;row++){
-                    if(typeof this.chemino_grid[row][col] === 'string'){
-                        this.chemino_grid[row][col+1] = this.chemino_grid[row][col]
-                        this.chemino_grid[row][col] = 0
+        moveRightChemino() {
+            if (!this.canMoveSide('right')) return
+                this.col_position = this.col_position + 1
+                for (let row = 24; row >= 0; row--) {
+                    for (let col = 20; col >= 0; col--) {
+                        if (typeof this.chemino_grid[row][col] === 'string') {
+                            // Move para a direita
+                            this.chemino_grid[row][col + 1] = this.chemino_grid[row][col]
+                            this.chemino_grid[row][col] = 0
+                        }
+                    }
                 }
-                }
-            }
+            
         },
+        async dropChemino() {
+            this.pauseGameLoop()
+        
+            // Enquanto puder mover para baixo, move
+            while (this.canMoveDown()) {
+                this.moveDownChemino()
+                this.setGrid()
+                await new Promise(resolve => setTimeout(resolve, 30))
+            }
+            this.is_chemino_falling = false
+            this.is_next_locked = false
+            // Agora que ele não pode mais descer, você:
+            this.setArenaGrid()    // <-- fixa o chemino na arena na posição FINAL
+            this.setChemino() // <-- gera um novo chemino
+            this.setGrid()          // <-- atualiza o grid para refletir
+        
+            this.resumeGameLoop()
+        },
+        
         rotateChemino() {
-            // Copia uma área 3x3 onde está o chemino
-            const tempMatrix: (number | string)[][] = [
-                [0, 0, 0],
-                [0, 0, 0],
-                [0, 0, 0]
-            ];
+            this.pauseGameLoop()
+
+            // 1. Extrair a peça atual (3x3) da chemino_grid
+
+            // 1. Extrair a peça atual (3x3) da chemino_grid, considerando a posição atual (row_position, col_position)
+    const piece: (number | string)[][] = [];
+
+    for (let row = 0; row < 3; row++) {
+        const pieceRow: (number | string)[] = [];
+        for (let col = 0; col < 3; col++) {
+            // Calcular a posição no grid
+            const gridRow = this.row_position + row ;
+            const gridCol = this.col_position + col + 9 ;
+
+            // Verificar se a célula está dentro dos limites do grid
+            if (gridRow >= 0 && gridRow < this.chemino_grid.length && gridCol >= 0 && gridCol < this.chemino_grid[0].length) {
+                pieceRow.push(this.chemino_grid[gridRow][gridCol]);
+            } else {
+                pieceRow.push(0);  // Preencher com 0 se o índice estiver fora do limite
+            }
+        }
+        piece.push(pieceRow);
+    }
+
+    console.log("Peça extraída:", piece);  // Verifique a peça extraída no log
         
-            for (let row = 0; row < 3; row++) {
-                for (let col = 0; col < 3; col++) {
-                    tempMatrix[row][col] = this.chemino_grid[this.row_position + row]?.[9 + col] ?? 0;
+            // 2. Rotacionar a peça 90 graus para a direita em torno da célula central (1,1)
+            const rotatedPiece: (number | string)[][] = [];
+            for (let col = 0; col < 3; col++) {
+                const newRow: (number | string)[] = [];
+                for (let row = 2; row >= 0; row--) {
+                    newRow.push(piece[row][col]);
                 }
+                rotatedPiece.push(newRow);
             }
         
-            // Função para rotacionar uma matriz 3x3 90 graus sentido horário
-            const rotatedMatrix = tempMatrix[0].map((_, index) => 
-                tempMatrix.map(row => row[index]).reverse()
-            );
-        
-            // Antes de aplicar, você pode validar colisão ou borda aqui se quiser
-        
-            // Limpa a área antiga
+            console.log(rotatedPiece)
+
+            // 3. Verificar se a rotação é válida: a peça rotacionada pode não ultrapassar os limites do grid ou colidir com outra peça
+            let canRotate = true;
             for (let row = 0; row < 3; row++) {
                 for (let col = 0; col < 3; col++) {
-                    if (typeof this.chemino_grid[this.row_position + row]?.[9 + col] === 'string') {
-                        this.chemino_grid[this.row_position + row][9 + col] = 0;
+                    const newRow = row + this.row_position;
+                    const newCol = col + this.col_position + 9;
+                    if (rotatedPiece[row][col] !== 0) {
+                        if (newRow < 0 || newRow >= 25 || newCol < 0 || newCol >= 21 || this.arena_grid[newRow][newCol] !== 0) {
+                            canRotate = false;
+                            break;
+                        }
                     }
                 }
-            }
-        
-            // Aplica a matriz rotacionada
-            for (let row = 0; row < 3; row++) {
-                for (let col = 0; col < 3; col++) {
-                    if (rotatedMatrix[row][col] !== 0) {
-                        this.chemino_grid[this.row_position + row][9 + col] = rotatedMatrix[row][col];
+            }    
+            console.log(canRotate)    
+            // 4. Se a rotação for válida, aplicar a rotação
+            if (canRotate) {
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 3; col++) {
+                        const newRow = row + this.row_position;
+                        const newCol = col + this.col_position + 9;
+                        if (rotatedPiece[row][col] !== 0) {
+                            this.chemino_grid[newRow][newCol] = rotatedPiece[row][col];
+                        } else {
+                            this.chemino_grid[newRow][newCol] = 0;
+                        }
                     }
                 }
+            } else {
+                console.log("Rotação inválida, peça colide ou ultrapassa os limites.");
             }
+                        this.resumeGameLoop()
+
         },
+        
         
         getRandomItem(): CheminoItem {
             const totalWeight = chemino_items.reduce((sum, chemino) => sum + chemino.weight, 0);
