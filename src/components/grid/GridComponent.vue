@@ -15,31 +15,42 @@
                 </tbody>
             </table>
     </div>
-    <div class="next-wrapper" @click="lockNext">
-        <div class="next-locked">
-            <table>
-                <tbody>
-                    <tr v-for="(row, rowIndex) in engine.next_chemino.shape.matrix" :key="rowIndex">
-                        <td v-for="(cell, cellIndex) in row" :key="cellIndex"
-                class="cell-next">                        
-                            <div v-if="cell == 0" class="cell-blank"></div>
-                            <div v-else-if="cell == 1" class="cell-x"></div>
-                            <div v-else :class="getClassForCell(cell)" class="cell-element">{{ cell }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <h4 v-if="engine.is_next_locked">locked!</h4>
-        </div>
-    </div>
-    <div class="controls">
-        <div class="control-rotate" @click="rotateChemino"></div>
-        <div class="control-bottom">
-            <div class="control-left" @click="moveLeft"></div>
-            <div class="control-down" @click="moveDown"></div>
-            <div class="control-right" @click="moveRight"></div>
-        </div>
-    </div>
+            <div class="next-wrapper" @click="lockNext">
+                <div class="next-locked">
+                    <table>
+                        <tbody>
+                            <tr v-for="(row, rowIndex) in engine.next_chemino.shape.matrix" :key="rowIndex">
+                                <td v-for="(cell, cellIndex) in row" :key="cellIndex"
+                        class="cell-next">                        
+                                    <div v-if="cell == 0" class="cell-blank"></div>
+                                    <div v-else-if="cell == 1" class="cell-x"></div>
+                                    <div v-else :class="getClassForCell(cell)" class="cell-element">{{ cell }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 v-if="engine.is_next_locked">locked!</h4>
+                </div>
+            </div>
+        
+        <div class="controls">
+                <div class="control-rotate" @click="rotateChemino"></div>
+                <div class="control-bottom">
+                    <div class="control-left" @click="moveLeft"></div>
+                    <div class="control-down" @click="moveDown"></div>
+                    <div class="control-right" @click="moveRight"></div>
+                </div>
+            </div>
+            
+            <div v-if="engine.is_game_over" class="game-over">
+                <div class="game-over-wrapper">
+                    <h3>Game Over</h3>
+                    <h4>Seu score</h4>
+                    <h4>{{ engine. score }}</h4>
+                    <button @click="startNewGame">Reiniciar</button>
+                </div>
+            </div>
+        
 </div>
 
 </template>
@@ -94,6 +105,10 @@ const lockNext = () => {
 
 const rotateChemino = () => {
     engine.rotateChemino();
+}
+
+const startNewGame = () => {
+    engine.startNewGame();
 }
 
 

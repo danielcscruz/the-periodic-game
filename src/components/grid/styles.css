@@ -7,6 +7,7 @@
     height: 100vh;
     max-width:600px;
     margin: 0 auto;
+    justify-content: center;
 }
 .grid-wrapper{
     height: 100vh;
@@ -97,10 +98,14 @@ table {
 .cell-element{
 
     font-family: "Tiny5", sans-serif;
+    display:flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     text-justify: center;
     align-items: center;
-    font-size: 15px;
+    font-size: 18px;
+    line-height: 20px;
     height: 100%;
     width: 100%;
     border: 1px solid rgb(92, 127, 38);
@@ -124,63 +129,107 @@ table {
 
 }
 
+.game-over{
+    position: fixed;
+    color:  rgb(39, 39, 39);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(84, 84, 84, 0.892);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.game-over h3{
+    font-family: Tiny5;
+    font-size: 50px;
+    text-align: center;
+    color: black;
+
+    
+}
+.game-over h4{
+    font-family: Tiny5;
+    font-size: 40px;
+    text-align: center;
+}
+
+button{
+    background-color: rgba(51, 50, 50, 0.8);
+    border: 1px dotted rgb(194, 191, 191);
+    color: rgb(194, 191, 191);
+    font-family: Tiny5;
+    font-size: 20px;
+    padding: 16px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: rgb(194, 191, 191);
+    border: 1px dotted rgba(51, 50, 50, 0.8);
+    color: rgba(51, 50, 50, 0.8);
+}
 
 /* Classe para hidrogênio */
 .hydrogen {
-    border: 1px solid #ff1e56; /* Vermelho neon */
+    border: 0.5px solid #ff1e56; /* Vermelho neon */
 }
 
 /* Classe para gases nobres */
 .noble-gas {
-    border: 1px solid #00b0ff; /* Azul neon */
+    border: 0.5px solid #00b0ff; /* Azul neon */
 }
 
 /* Classe para metais alcalinos */
 .alkali-metal {
-    border: 1px solid #ff0000; /* Vermelho neon */
+    border: 0.5px solid #ff0000; /* Vermelho neon */
 }
 
 /* Classe para metais alcalino-terrosos */
 .alkaline-earth-metal {
-    border: 1px solid #ff6f00; /* Laranja neon */
+    border: 0.5px solid #ff6f00; /* Laranja neon */
 }
 
 /* Classe para metaloides */
 .metalloid {
-    border: 1px solid #ffa500; /* Laranja-amarelo neon */
+    border: 0.5px solid #ffa500; /* Laranja-amarelo neon */
 }
 
 /* Classe para não-metais */
 .non-metal {
-    border: 1px solid #32cd32; /* Verde neon */
+    border: 0.5px solid #32cd32; /* Verde neon */
 }
 
 /* Classe para halogênios */
 .halogen {
-    border: 1px solid #00ff00; /* Verde neon claro */
+    border: 0.5px solid #00ff00; /* Verde neon claro */
 }
 
 /* Classe para metais de transição */
 .transition-metal {
-    border: 1px solid #ffff00; /* Amarelo neon */
+    border: 0.5px solid #ffff00; /* Amarelo neon */
 }
 
 /* Classe para lantânidos */
 .lanthanide {
-    border: 1px solid #ff9b6a; /* Laranja neon claro */
+    border: 0.5px solid #ff9b6a; /* Laranja neon claro */
 }
 
 /* Classe para actinídeos */
 .actinide {
-    border: 1px solid #ffec3d; /* Amarelo neon claro */
+    border: 0.5px solid #ffec3d; /* Amarelo neon claro */
 }
 
 /* Classe para outros metais */
 .metal {
-    border: 1px solid #ffd700; /* Amarelo ouro neon */
+    border: 0.5px solid #ffd700; /* Amarelo ouro neon */
 }
 
 .undefined {
-    border: 1px solid #f0e68c; /* Amarelo neon mais suave */
+    border: 0.5px solid #f0e68c; /* Amarelo neon mais suave */
 }
 

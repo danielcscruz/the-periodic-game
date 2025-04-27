@@ -36,7 +36,7 @@ function addGrids(
     gridC: (number | string)[][] = [] // Argumento opcional
 ): (number | string)[][] {
     const result = JSON.parse(JSON.stringify(gridA)) as (number | string)[][];
-
+    const engine = useGameEngine()
     for (let row = 0; row < gridA.length; row++) {
         for (let col = 0; col < gridA[row].length; col++) {
             const a = gridA[row][col];
@@ -47,7 +47,8 @@ function addGrids(
 
             if (b !== 0) {
                 if (a !== 0 && a !== b) {
-                    throw new Error(`Erro de adição: sobreposição diferente detectada em [${row}, ${col}]`);
+                    engine.is_game_over = true
+                    throw new Error(`Game Over`);
                 }
                 result[row][col] = b;
             }
@@ -75,10 +76,9 @@ export const useGameEngine = defineStore('engine', {
             is_next_locked: false,
             is_chemino_falling: false,
             is_game_over: false,
-            prep_chemino: true,
             row_position: 0,
             col_position: 0,
-            score: 1,
+            score: 0,
             isRunning: true,
             intervalId: null as null | number,
             gameSpeed: 500, // in ms
@@ -94,6 +94,21 @@ export const useGameEngine = defineStore('engine', {
                 if (!this.isRunning) return
                 this.updateGame()
             }, this.gameSpeed)
+
+        },
+        startNewGame(){
+            this.grid = JSON.parse(JSON.stringify(INITIAL_GRID)) 
+            this.chemino_grid = JSON.parse(JSON.stringify(INITIAL_GRID)) 
+            this.next_grid = JSON.parse(JSON.stringify(INITIAL_GRID)) 
+            this.arena_grid = JSON.parse(JSON.stringify(INITIAL_GRID)) 
+            this.next_chemino = chemino_items[0]
+            this.is_next_locked = false
+            this.is_chemino_falling = false
+            this.is_game_over = false
+            this.row_position = 0
+            this.col_position = 0
+            this.score = 0
+            this.startGameLoop()
 
         },
         stopGameLoop() {
