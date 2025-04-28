@@ -1,6 +1,8 @@
 import chemino_items from '@/components/elements/cheminos'
 import type { CheminoItem } from '@/components/elements/cheminos'
 import { defineStore } from 'pinia'
+import { scoreCalculator } from '@/utils/scoreCalculator'
+import reaction_items, { type ReactionItem } from '@/components/elements/reactions'
 
 //25x21
 const INITIAL_GRID = [
@@ -73,13 +75,16 @@ export const useGameEngine = defineStore('engine', {
             next_grid: JSON.parse(JSON.stringify(INITIAL_GRID)) as (number | string)[][],
             arena_grid: JSON.parse(JSON.stringify(INITIAL_GRID)) as (number | string)[][],
             next_chemino: chemino_items[0] as CheminoItem,
+            chemino: chemino_items[0] as CheminoItem,
+            reaction: reaction_items[0] as ReactionItem,
             is_next_locked: false,
             is_chemino_falling: false,
+            is_welcome: true,
             is_game_over: false,
             row_position: 0,
             col_position: 0,
             score: 0,
-            isRunning: true,
+            isRunning: false,
             intervalId: null as null | number,
             gameSpeed: 500, // in ms
 
@@ -107,6 +112,7 @@ export const useGameEngine = defineStore('engine', {
             this.is_game_over = false
             this.row_position = 0
             this.col_position = 0
+            this.is_welcome = false
             this.score = 0
             this.startGameLoop()
 
@@ -158,7 +164,6 @@ export const useGameEngine = defineStore('engine', {
         
                         // Se passar da borda ou colidir com algo na arena
                         if (newCol < 0 || newCol > 20 || this.arena_grid[row][newCol] !== 0) {
-                            console.log("#Collision: cant move/rotate")
                             return false
                         }
                     }
@@ -180,7 +185,6 @@ export const useGameEngine = defineStore('engine', {
 
         setChemino(){
             this.chemino_grid= JSON.parse(JSON.stringify(INITIAL_GRID))
-            console.log('reiniciou Chemino grid')
             for (let row = 0; row < 3; row++) {
                 for (let col = 0; col < 3; col++) {
                     this.chemino_grid[row][9 + col] = this.next_chemino.shape.matrix[row][col];
@@ -203,8 +207,13 @@ export const useGameEngine = defineStore('engine', {
             }
         },
         setGrid(){
+            
             this.grid = addGrids(this.arena_grid, this.chemino_grid)
 
+        },
+        setScore(){
+            console.log('set score')
+            this.score = this.score + scoreCalculator(this.grid, this.chemino_grid, this.row_position, this.col_position)
         },
         updateGame() {
 
@@ -212,6 +221,7 @@ export const useGameEngine = defineStore('engine', {
                 this.setChemino()
                 this.updateNext()
                 this.setArenaGrid()
+
             } else {
                 if (this.canMoveDown()) {
                     this.moveDownChemino()
@@ -221,11 +231,14 @@ export const useGameEngine = defineStore('engine', {
                     this.is_chemino_falling = false
                     this.is_next_locked = false
                     this.setArenaGrid()
-                    this.setGrid()
+                    console.log('score #1')
+                    this.setScore()
+
                 }
             }
+
             this.setGrid()
-            this.score = this.score +1
+
 
         },
         moveLeftChemino() {
@@ -256,23 +269,19 @@ export const useGameEngine = defineStore('engine', {
                 }
             
         },
-        async dropChemino() {
-            this.pauseGameLoop()
-        
+        async dropChemino() {        
             // Enquanto puder mover para baixo, move
             while (this.canMoveDown()) {
                 this.moveDownChemino()
                 this.setGrid()
                 await new Promise(resolve => setTimeout(resolve, 30))
             }
-            this.is_chemino_falling = false
-            this.is_next_locked = false
-            // Agora que ele não pode mais descer, você:
-            this.setArenaGrid()    // <-- fixa o chemino na arena na posição FINAL
-            this.setChemino() // <-- gera um novo chemino
-            this.setGrid()          // <-- atualiza o grid para refletir
-        
-            this.resumeGameLoop()
+            // this.is_chemino_falling = false
+            // this.is_next_locked = false
+            // // Agora que ele não pode mais descer, você:
+            // this.setArenaGrid()    // <-- fixa o chemino na arena na posição FINAL
+            // this.setChemino() // <-- gera um novo chemino
+            // this.setGrid()          // <-- atualiza o grid para refletir
         },
         
         rotateChemino() {
@@ -300,7 +309,6 @@ export const useGameEngine = defineStore('engine', {
         piece.push(pieceRow);
     }
 
-    console.log("Peça extraída:", piece);  // Verifique a peça extraída no log
         
             // 2. Rotacionar a peça 90 graus para a direita em torno da célula central (1,1)
             const rotatedPiece: (number | string)[][] = [];
@@ -312,7 +320,6 @@ export const useGameEngine = defineStore('engine', {
                 rotatedPiece.push(newRow);
             }
         
-            console.log(rotatedPiece)
 
             // 3. Verificar se a rotação é válida: a peça rotacionada pode não ultrapassar os limites do grid ou colidir com outra peça
             let canRotate = true;
@@ -328,7 +335,6 @@ export const useGameEngine = defineStore('engine', {
                     }
                 }
             }    
-            console.log(canRotate)    
             // 4. Se a rotação for válida, aplicar a rotação
             if (canRotate) {
                 for (let row = 0; row < 3; row++) {
@@ -343,12 +349,10 @@ export const useGameEngine = defineStore('engine', {
                     }
                 }
             } else {
-                console.log("Rotação inválida, peça colide ou ultrapassa os limites.");
             }
                         this.resumeGameLoop()
 
         },
-        
         
         getRandomItem(): CheminoItem {
             const totalWeight = chemino_items.reduce((sum, chemino) => sum + chemino.weight, 0);
@@ -364,6 +368,41 @@ export const useGameEngine = defineStore('engine', {
             // fallback de segurança
             return chemino_items[chemino_items.length - 1];
         },
+        getNextChemino(): CheminoItem {
+            const currentIndex = chemino_items.findIndex(item => item.formula === this.chemino.formula);
+        
+            // Verifica se encontrou e avança para o próximo
+            const nextIndex = (currentIndex + 1) % chemino_items.length; // Faz o loop voltar para o começo se for o último
+        
+            this.chemino = chemino_items[nextIndex];
+            return this.chemino;
+        },
+        getPrevChemino(): CheminoItem {
+            const currentIndex = chemino_items.findIndex(item => item.formula === this.chemino.formula);
+            const prevIndex = (currentIndex - 1 + chemino_items.length) % chemino_items.length;
+        
+            this.chemino = chemino_items[prevIndex];
+            return this.chemino;
+        },
+        getNextReaction(): ReactionItem {
+            console.log('next reaction ')
+            const currentIndex = reaction_items.findIndex(item => item.id === this.reaction.id);
+        
+            // Verifica se encontrou e avança para o próximo
+            const nextIndex = (currentIndex + 1) % reaction_items.length; // Faz o loop voltar para o começo se for o último
+        
+            this.reaction = reaction_items[nextIndex];
+            return this.reaction;
+        },
+        getPrevReaction(): ReactionItem {
+            console.log('prev reaction')
+            const currentIndex = reaction_items.findIndex(item => item.id === this.reaction.id);
+            const prevIndex = (currentIndex - 1 + reaction_items.length) % reaction_items.length;
+        
+            this.reaction = reaction_items[prevIndex];
+            return this.reaction;
+        },
+        
         toggle() {
             this.is_next_locked = !this.is_next_locked;
         },

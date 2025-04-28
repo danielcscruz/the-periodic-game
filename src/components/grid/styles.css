@@ -129,7 +129,7 @@ table {
 
 }
 
-.game-over{
+.modal{
     position: fixed;
     color:  rgb(39, 39, 39);
     width: 100vw;
@@ -143,7 +143,7 @@ table {
     margin: 0 auto;
 }
 
-.game-over h3{
+.modal h3{
     font-family: Tiny5;
     font-size: 50px;
     text-align: center;
@@ -151,7 +151,7 @@ table {
 
     
 }
-.game-over h4{
+.modal h4{
     font-family: Tiny5;
     font-size: 40px;
     text-align: center;

@@ -42,13 +42,16 @@
                 </div>
             </div>
             
-            <div v-if="engine.is_game_over" class="game-over">
+            <div v-if="engine.is_game_over" class="modal">
                 <div class="game-over-wrapper">
                     <h3>Game Over</h3>
                     <h4>Seu score</h4>
                     <h4>{{ engine. score }}</h4>
                     <button @click="startNewGame">Reiniciar</button>
                 </div>
+            </div>
+            <div v-if="engine.is_welcome" class="modal">
+                <WelcomeView />
             </div>
         
 </div>
@@ -59,12 +62,13 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, onBeforeUnmount } from 'vue'
 import { useGameEngine } from '@/stores/engine'
-import { classDictionary } from './classDictionary'; // Importando o dicionário
+import { elementDictionary } from '@/components/elements/periodic'
+import WelcomeView from '../welcome/WelcomeView.vue'
 
 const engine = useGameEngine()
 
 onMounted(() => {
-    engine.startGameLoop()
+    // engine.startGameLoop()
 })
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -127,7 +131,7 @@ onUnmounted(() => {
 
 const getClassForCell = (cell: string| number) => {
     const cellKey = cell.toString(); // Converte o valor para string
-    return classDictionary[cellKey] || 'undefined'; // Classe padrão caso não haja correspondência
+    return elementDictionary[cellKey].class || 'undefined'
 };
 
 
