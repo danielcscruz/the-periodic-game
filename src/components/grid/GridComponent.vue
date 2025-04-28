@@ -1,7 +1,7 @@
 <template>
 <div class="periodic-container">
     <div class="grid-wrapper">
-        <div class="scoreboard">{{ engine.score }}</div>
+        <div v-if="!engine.is_welcome" class="scoreboard">{{ engine.score }}</div>
             <table>
                 <tbody>
                     <tr v-for="(row, rowIndex) in engine.grid" :key="rowIndex">
@@ -15,7 +15,7 @@
                 </tbody>
             </table>
     </div>
-            <div class="next-wrapper" @click="lockNext">
+            <div v-if="!engine.is_welcome && !engine.is_game_over" class="next-wrapper" @click="lockNext">
                 <div class="next-locked">
                     <table>
                         <tbody>
@@ -43,7 +43,7 @@
             </div>
             
             <div v-if="engine.is_game_over" class="modal">
-                <div class="game-over-wrapper">
+                <div class="display">
                     <h3>Game Over</h3>
                     <h4>Seu score</h4>
                     <h4>{{ engine. score }}</h4>

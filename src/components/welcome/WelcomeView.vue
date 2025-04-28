@@ -28,13 +28,10 @@ const getClassForCell = (cell: string| number) => {
 
 <template>
     <div class="welcome-wrapper">
-
-                        <h3 class="title">Periodic Tetris</h3>
-                        <h6>Use Cheminos para Reações Químicas</h6>
-                    <div class="cheminos-wrapper">
-                        <h2>Cheminos</h2>
+                        <h1 class="title">Periodic Tetris</h1>
+                    <div class="wrapper">
                         <div class="display">
-                            <span class="display-span">{{  engine.chemino.display }}</span>
+                            <h2 class="sub-title">Cheminos</h2>
                             <div class="chemino-display">
                                 <button class="prev-next" @click="prevChemino">&lt;</button>
                                 <table>
@@ -50,12 +47,12 @@ const getClassForCell = (cell: string| number) => {
                                 </table>
                                 <button class="prev-next" @click="nextChemino">></button>
                             </div>
+                            <span class="display-span">{{  engine.chemino.display }}</span>
                         </div>
                     </div>
-                    <div class="reaction-wrapper">
-                        <h2>Reações</h2>
+                    <div class="wrapper">
                         <div class="display">
-                            <span class="display-span">{{  engine.reaction.reaction }}</span>
+                            <h2 class="sub-title">Reações</h2>
                             <div class="chemino-display">
                                 <button class="prev-next" @click="prevReaction">&lt;</button>
                                 <table>
@@ -71,6 +68,7 @@ const getClassForCell = (cell: string| number) => {
                                 </table>
                                 <button class="prev-next" @click="nextReaction">></button>
                             </div>
+                            <span class="display-span">{{  engine.reaction.reaction }}</span>
                         </div>
                     </div>
                     <button  @click="startNewGame">Iniciar</button>
@@ -92,12 +90,16 @@ td{
     margin: 2px;
 
 }
+.wrapper{
+    display: flex;
+    justify-content: center;
+}
 .display{
     display: flex;
     flex-direction: column;
     background-color: rgb(31, 28, 49);
     border: 1px solid rgb(194, 191, 191);
-    padding: 8px;
+    margin-top: 20px;
 
 }
 .display-span{
@@ -108,7 +110,7 @@ td{
 }
 
 .chemino-display{
-    height: 200px;
+    height: 150px;
     width: 300px;
     display: flex;
     justify-content: center;
@@ -135,12 +137,8 @@ h6{
 
     
 }
-/* .cell{
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    align-items: center;
-} */
+
+
 h2{
     font-family: Tiny5;
     font-size: 30px;
@@ -182,5 +180,10 @@ button:hover{
     font-size: 70px;
     font-weight: 800;
     text-align: center;
+    color: rgb(194, 191, 191);
+}
+.sub-title{
+    color: rgb(194, 191, 191);
+
 }
 </style>
