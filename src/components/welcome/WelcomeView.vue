@@ -76,21 +76,49 @@ const getClassForCell = (cell: string| number) => {
 </template>
 
 <style lang="css" scoped>
-@import '../grid/styles.css';
+/* @import '../grid/styles.css'; */
 body {
   user-select: none;
+}
+.welcome-wrapper{
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
 }
 tr{
     display: flex;
     justify-content: center;
 }
 td{
-    height: 30px;
-    width: 30px;
-    margin: 2px;
 
 }
+.cell{
+    /* border: 1px solid white; */
+    width: var(--cell-width);
+    height: var(--cell-height);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    position: relative;
+    font-family: Tiny5;
+    color: rgb(194, 191, 191);
+    height: 30px;
+    width: 30px;
+
+}
+.cell-element-display{
+    height: 100%;
+    width: 100%;
+}
+table{
+    /* border: 1px solid white; */
+    border-collapse: collapse;
+    table-layout: fixed; /* <--- muito importante! */
+    width: 100%;
+}
 .wrapper{
+    
     display: flex;
     justify-content: center;
 }
@@ -100,6 +128,7 @@ td{
     background-color: rgb(31, 28, 49);
     border: 1px solid rgb(194, 191, 191);
     margin-top: 20px;
+    height: 180px;
 
 }
 .display-span{
@@ -120,14 +149,7 @@ td{
     
 }
 
-.cell-element-display{
-    height: 30px;
-    width: 30px;
-    color: rgb(194, 191, 191);
-}
-.table{
-    border: 1px solid white;
-}
+
 h6{
     font-family: Tiny5;
     font-size: 20px;
@@ -154,9 +176,13 @@ button{
     color: rgb(194, 191, 191);
     font-family: Tiny5;
     font-size: 20px;
-    padding: 12px;
+    padding: 8px;
     margin: 20px;
     cursor: pointer;
+    width: 80px;
+    width: 100px;
+    align-self: center;
+
 }
 
 button:hover{
@@ -177,13 +203,82 @@ button:hover{
 }
 .title{
     font-family: Tiny5;
-    font-size: 70px;
+    font-size: 80px;
     font-weight: 800;
     text-align: center;
     color: rgb(194, 191, 191);
+    @media screen and (max-width:900px) {
+        font-size: 45px;
+
+        
+    }
 }
 .sub-title{
     color: rgb(194, 191, 191);
+    @media screen and (max-width:900px) {
+        font-size: 20px;
 
+        
+    }
 }
+/* Classe para hidrogênio */
+.hydrogen {
+    border: 0.5px solid #ff1e56; /* Vermelho neon */
+}
+
+/* Classe para gases nobres */
+.noble-gas {
+    border: 0.5px solid #00b0ff; /* Azul neon */
+}
+
+/* Classe para metais alcalinos */
+.alkali-metal {
+    border: 0.5px solid #ff0000; /* Vermelho neon */
+}
+
+/* Classe para metais alcalino-terrosos */
+.alkaline-earth-metal {
+    border: 0.5px solid #ff6f00; /* Laranja neon */
+}
+
+/* Classe para metaloides */
+.metalloid {
+    border: 0.5px solid #ffa500; /* Laranja-amarelo neon */
+}
+
+/* Classe para não-metais */
+.non-metal {
+    border: 0.5px solid #32cd32; /* Verde neon */
+}
+
+/* Classe para halogênios */
+.halogen {
+    border: 0.5px solid #00ff00; /* Verde neon claro */
+}
+
+/* Classe para metais de transição */
+.transition-metal {
+    border: 0.5px solid #ffff00; /* Amarelo neon */
+}
+
+/* Classe para lantânidos */
+.lanthanide {
+    border: 0.5px solid #ff9b6a; /* Laranja neon claro */
+}
+
+/* Classe para actinídeos */
+.actinide {
+    border: 0.5px solid #ffec3d; /* Amarelo neon claro */
+}
+
+/* Classe para outros metais */
+.metal {
+    border: 0.5px solid #ffd700; /* Amarelo ouro neon */
+}
+
+.undefined {
+    border: 0.5px solid #f0e68c; /* Amarelo neon mais suave */
+}
+
+
 </style>

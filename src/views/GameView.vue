@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import GridComponent from '@/components/grid/GridComponent.vue';
-import InfoComponent from '@/components/info/InfoComponent.vue'
+// import InfoComponent from '@/components/info/InfoComponent.vue'
 
 </script>
 
@@ -8,7 +8,7 @@ import InfoComponent from '@/components/info/InfoComponent.vue'
   <main>
     <div class="container">
       <GridComponent/>
-      <InfoComponent />
+      <!-- <InfoComponent /> -->
 
     </div>
 </main>
