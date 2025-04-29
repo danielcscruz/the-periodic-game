@@ -1,7 +1,8 @@
 import chemino_items from '@/components/elements/cheminos'
 import type { CheminoItem } from '@/components/elements/cheminos'
 import { defineStore } from 'pinia'
-import { scoreCalculator } from '@/utils/scoreCalculator'
+import { checkNeighbors } from '@/utils/checkNeighbors'
+import { scoreAtomicNumbers } from '@/utils/scoreAtomicNumber'
 import reaction_items, { type ReactionItem } from '@/components/elements/reactions'
 
 //25x21
@@ -67,6 +68,10 @@ function addGrids(
     return result;
 }
 
+export interface NeighborsItem {
+    element: string | number; x: number; y: number; neighbors: { x: number; y: number; value: string | number; }[]; }
+
+
 export const useGameEngine = defineStore('engine', {
     state: () => {
         return {
@@ -81,6 +86,7 @@ export const useGameEngine = defineStore('engine', {
             is_chemino_falling: false,
             is_welcome: true,
             is_game_over: false,
+            chemino_neighbors: [] as NeighborsItem[],
             row_position: 0,
             col_position: 0,
             score: 0,
@@ -212,8 +218,12 @@ export const useGameEngine = defineStore('engine', {
 
         },
         setScore(){
-            console.log('set score')
-            this.score = this.score + scoreCalculator(this.grid, this.chemino_grid, this.row_position, this.col_position)
+            this.score = this.score 
+            console.log('check neighbors')
+            const chemino_neighbors = checkNeighbors(this.grid, this.chemino_grid, this.row_position, this.col_position)
+            
+            this.score = this.score + scoreAtomicNumbers(chemino_neighbors)
+            
         },
         updateGame() {
 

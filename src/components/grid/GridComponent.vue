@@ -88,6 +88,16 @@ const handleKeyDown = (event: KeyboardEvent) => {
         case 'ArrowDown':
             engine.dropChemino();
             break;
+        case 'KeyP': // ⬅️ Aqui você captura a tecla "P"
+            engine.pauseGameLoop();
+            break;
+        case 'KeyS': // ⬅️ Aqui você captura a tecla "P"
+            engine.resumeGameLoop();
+            break;
+        case 'KeyR': // ⬅️ Aqui você captura a tecla "P"
+            engine.startNewGame();
+            break;
+
     }
 }
 

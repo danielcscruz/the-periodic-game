@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import GridComponent from '@/components/grid/GridComponent.vue';
+import InfoComponent from '@/components/info/InfoComponent.vue'
 
 </script>
 
@@ -7,6 +8,7 @@ import GridComponent from '@/components/grid/GridComponent.vue';
   <main>
     <div class="container">
       <GridComponent/>
+      <InfoComponent />
 
     </div>
 </main>
@@ -18,7 +20,7 @@ import GridComponent from '@/components/grid/GridComponent.vue';
 .container{
   height: 100vh;
   background-color: rgb(31, 28, 49);
-  display: grid;
+  display: flex;
   gap: 1rem;
   align-items: center;
 }
