@@ -1,39 +1,35 @@
-# the-periodic-game
+# Periodic Tetris
 
-This template should help get you started developing with Vue 3 in Vite.
+Tetris químico em Vue 3 + Pinia. Cada peça é uma molécula; quando os reagentes de uma
+reação catalogada ficam conectados (vizinhança ortogonal, em qualquer formato) e vêm de
+pelo menos duas moléculas diferentes, eles reagem e saem do tabuleiro.
 
-## Recommended IDE Setup
+## Estrutura
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- `src/game/` — regras puras, sem Vue (testáveis isoladamente)
+  - `config.ts` tamanho do tabuleiro e tempos
+  - `reactions.ts` catálogo de reações (reagentes + efeito)
+  - `reactionEngine.ts` detecção de reações e efeitos
+  - `board.ts`, `pieces.ts` colisão, gravidade e rotação
+- `src/stores/engine.ts` — estado e loop do jogo (máquina de estados)
+- `src/components/game/` — interface mobile first
 
-## Type Support for `.vue` Imports in TS
+## Adicionando uma reação
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Em `src/game/reactions.ts`, liste os átomos necessários e o efeito
+(`self`, `blast`, `rows` ou `all`). Confira se todos os átomos aparecem em alguma peça
+de `src/components/elements/cheminos.ts`.
 
-## Customize configuration
+## Controles
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Toque: arraste para mover, toque para girar, deslize para baixo para derrubar, toque na
+próxima peça para travá-la. Teclado: ← → movem, ↑ gira, ↓ derruba, Shift acelera,
+espaço trava a próxima peça, P pausa, R recomeça.
 
-## Project Setup
+## Rodando
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
 npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```

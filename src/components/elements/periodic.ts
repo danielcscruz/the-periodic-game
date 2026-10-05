@@ -126,3 +126,11 @@ export const elementDictionary: { [key: string]: ElementData } = {
     'Ts': { class: 'metalloid', atomicNumber: 117, atomicMass: 294 },
     'Og': { class: 'noble-gas', atomicNumber: 118, atomicMass: 294 },
 };
+
+export function familyOf(symbol: string): string {
+    return elementDictionary[symbol]?.class ?? 'unknown'
+}
+
+export function atomicNumberOf(symbol: string): number {
+    return elementDictionary[symbol]?.atomicNumber ?? 0
+}

@@ -1,57 +1,30 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --cell-height: 3.5vh;
-  --cell-width: 2vw;
-  /* fallback */
+  /* Superfícies */
+  --bg: #1f1c31;
+  --well: #15132a;
+  --well-line: rgba(194, 191, 191, 0.07);
+  --frame: #c2bfbf;
+  --ink: #ece9f7;
+  --muted: #9893b6;
 
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  /* Famílias da tabela periódica */
+  --f-hydrogen: #ff4f7b;
+  --f-noble-gas: #4cc3ff;
+  --f-alkali-metal: #ff6b4a;
+  --f-alkaline-earth-metal: #ffa53d;
+  --f-metalloid: #e3c64f;
+  --f-non-metal: #6fe46f;
+  --f-halogen: #3fe0b5;
+  --f-transition-metal: #f4e04b;
+  --f-lanthanide: #ff9b6a;
+  --f-actinide: #c08cff;
+  --f-metal: #b9c4d6;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --font-pixel: 'Tiny5', ui-monospace, 'Courier New', monospace;
+  --font-ui: 'Pixelify Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
-
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+  --tap: 56px;
+  --gap: 12px;
 }
 
 *,
@@ -59,35 +32,85 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
-  font-weight: normal;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
 }
 
 body {
-  margin: 0;
-  height: 100vh;
-  color: var(--color-text);
-  background-color: rgb(31, 28, 49);
-  position: relative;
-
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--f-noble-gas);
+  outline-offset: 2px;
+}
+
+/* Cor por família: qualquer elemento com .fam-* expõe --c */
+.fam-hydrogen { --c: var(--f-hydrogen); }
+.fam-noble-gas { --c: var(--f-noble-gas); }
+.fam-alkali-metal { --c: var(--f-alkali-metal); }
+.fam-alkaline-earth-metal { --c: var(--f-alkaline-earth-metal); }
+.fam-metalloid { --c: var(--f-metalloid); }
+.fam-non-metal { --c: var(--f-non-metal); }
+.fam-halogen { --c: var(--f-halogen); }
+.fam-transition-metal { --c: var(--f-transition-metal); }
+.fam-lanthanide { --c: var(--f-lanthanide); }
+.fam-actinide { --c: var(--f-actinide); }
+.fam-metal { --c: var(--f-metal); }
+.fam-unknown { --c: var(--frame); }
+
+/* Botão padrão do jogo */
+.btn {
+  min-height: var(--tap);
+  padding: 0 24px;
+  background: transparent;
+  border: 2px solid var(--frame);
+  color: var(--ink);
+  font-family: var(--font-pixel);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.btn:active {
+  background: var(--frame);
+  color: var(--bg);
+}
+.btn-primary {
+  background: var(--f-non-metal);
+  border-color: var(--f-non-metal);
+  color: var(--bg);
+}
+.btn-primary:active {
+  background: transparent;
+  color: var(--f-non-metal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
 }
