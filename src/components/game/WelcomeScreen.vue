@@ -7,7 +7,7 @@ import ReactionCard from './ReactionCard.vue'
 import PiecePreview from './PiecePreview.vue'
 
 const engine = useGameEngine()
-const tab = ref<'reactions' | 'molecules'>('reactions')
+const tab = ref<'reactions' | 'molecules' | 'about'>('reactions')
 </script>
 
 <template>
@@ -28,19 +28,31 @@ const tab = ref<'reactions' | 'molecules'>('reactions')
       <div class="tabs" role="tablist">
         <button role="tab" :aria-selected="tab === 'reactions'" @click="tab = 'reactions'">Reações</button>
         <button role="tab" :aria-selected="tab === 'molecules'" @click="tab = 'molecules'">Moléculas</button>
+        <button role="tab" :aria-selected="tab === 'about'" @click="tab = 'about'">Sobre</button>
       </div>
 
       <div v-if="tab === 'reactions'" role="tabpanel">
         <ReactionCard v-for="r in reactions" :key="r.id" :reaction="r" />
       </div>
 
-      <ul v-else class="molecules" role="tabpanel">
+      <ul v-else-if="tab === 'molecules'" class="molecules" role="tabpanel">
         <li v-for="m in chemino_items" :key="m.formula">
           <PiecePreview :matrix="m.shape.matrix" :cell="16" />
           <span class="formula">{{ prettyFormula(m.formula) }}</span>
           <span class="name">{{ m.display }}</span>
         </li>
       </ul>
+
+      <div v-else class="about" role="tabpanel">
+        <p>
+          Periodic Tetris mistura o clássico jogo de encaixar peças com química: cada peça é uma molécula,
+          e os átomos reagem quando se encontram.
+        </p>
+        <p class="credit">
+          Desenvolvido por
+          <a href="https://instagram.com/danccruz" target="_blank" rel="noopener noreferrer">@danccruz</a>
+        </p>
+      </div>
     </div>
 
     <div class="cta">
@@ -138,6 +150,20 @@ h1 {
   color: var(--muted);
   align-self: start;
   line-height: 1.2;
+}
+.about {
+  margin-top: 16px;
+  max-width: 42ch;
+}
+.about p + p {
+  margin-top: 12px;
+}
+.credit {
+  color: var(--muted);
+}
+.credit a {
+  color: var(--ink);
+  font-weight: 600;
 }
 .cta {
   padding: 12px 20px max(16px, env(safe-area-inset-bottom));
